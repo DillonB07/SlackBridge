@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "slackbridge",
+  "version": "${version}",
+  "name": "SlackBridge",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/slackbridge/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "studio.dillonb07.slackbridge.client.SlackbridgeClient"
+    ],
+    "main": [
+      "studio.dillonb07.slackbridge.Slackbridge"
+    ]
+  },
+  "mixins": [
+    "slackbridge.mixins.json",
+    {
+      "config": "slackbridge.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
