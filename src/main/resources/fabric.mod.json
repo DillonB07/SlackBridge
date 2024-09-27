@@ -10,9 +10,6 @@
   "icon": "assets/slackbridge/icon.png",
   "environment": "*",
   "entrypoints": {
-    "client": [
-      "studio.dillonb07.slackbridge.client.SlackbridgeClient"
-    ],
     "main": [
       "studio.dillonb07.slackbridge.Slackbridge"
     ]

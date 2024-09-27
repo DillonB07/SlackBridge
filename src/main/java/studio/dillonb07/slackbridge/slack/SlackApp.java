@@ -10,8 +10,8 @@ import studio.dillonb07.slackbridge.Slackbridge;
 
 public class SlackApp {
     public static void main() throws Exception {
-        String botToken = Slackbridge.CONFIG.botToken();
-        String appToken = Slackbridge.CONFIG.appToken();
+        String botToken = Slackbridge.CONFIG.slackBotToken;
+        String appToken = Slackbridge.CONFIG.slackAppToken;
         
         App app = new App(AppConfig.builder().singleTeamBotToken(botToken).build());
         
