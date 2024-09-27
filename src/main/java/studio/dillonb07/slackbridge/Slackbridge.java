@@ -2,6 +2,7 @@ package studio.dillonb07.slackbridge;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.packet.s2c.play.GameMessageS2CPacket;
 import net.minecraft.text.Text;
@@ -30,14 +31,8 @@ public class Slackbridge implements ModInitializer {
         slackBotThread.setDaemon(true);
         slackBotThread.start();
 
-        Identifier identifier = new Identifier("slackbridge", "chat_message");
-        // Register a listener for chat messages
-        ServerPlayNetworking.registerGlobalReceiver(Identifier.of("slackbridge", 
-                "chat_message"), (server, player, handler, buf, sender) -> {
-            String message = buf.readString(32767); // Specify the max length for the string
-            server.execute(() -> {
-                player.networkHandler.sendPacket(new GameMessageS2CPacket(Text.of(message), GameMessageS2CPacket.MessageType.CHAT));
-            });
+        ServerMessageEvents.CHAT_MESSAGE.register((message, sender, params) -> {
+            System.out.println("Received message: " + message);
         });
     }
 }
