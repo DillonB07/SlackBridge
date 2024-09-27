@@ -90,6 +90,10 @@ public class Slackbridge implements ModInitializer {
         
         ServerMessageEvents.GAME_MESSAGE.register((server, text, bool) -> {
             String textContent = text.getString();
+            if (textContent.startsWith(("<Slack:"))) {
+                return;
+            }
+            
             try {
                 sendSlackMessage(textContent);
             } catch (SlackApiException | IOException e) {

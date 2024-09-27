@@ -5,6 +5,7 @@ import com.slack.api.bolt.AppConfig;
 
 import com.slack.api.bolt.socket_mode.SocketModeApp;
 import com.slack.api.methods.SlackApiException;
+import com.slack.api.model.event.MessageChannelJoinEvent;
 import com.slack.api.model.event.MessageEvent;
 import com.slack.api.socket_mode.SocketModeClient;
 import net.minecraft.server.MinecraftServer;
@@ -38,6 +39,10 @@ public class SlackApp {
                 Slackbridge.LOGGER.error("User not found for ID: " + userId);
             }
             
+            return ctx.ack();
+        });
+        
+        app.event(MessageChannelJoinEvent.class, (req, ctx) -> {
             return ctx.ack();
         });
         
