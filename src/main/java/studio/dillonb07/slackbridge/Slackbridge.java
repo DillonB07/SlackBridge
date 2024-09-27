@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.MinecraftServer;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.eclipse.jetty.server.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import studio.dillonb07.slackbridge.commands.Ping;
@@ -19,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 
 import static studio.dillonb07.slackbridge.slack.SlackApp.sendChatMessage;
+import static studio.dillonb07.slackbridge.slack.SlackApp.sendSlackMessage;
 
 public class Slackbridge implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger("Slackbridge");
@@ -58,9 +60,26 @@ public class Slackbridge implements ModInitializer {
         slackBotThread.setName("Slackbridge Bot Thread");
         slackBotThread.setDaemon(true);
         slackBotThread.start();
-
-        ServerLifecycleEvents.SERVER_STARTING.register(server -> {
+        
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> {
             serverInstance = server;
+            try {
+                sendSlackMessage(":white_check_mark: Server has started! !");
+            } catch (SlackApiException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        ServerLifecycleEvents.SERVER_STOPPED.register(server -> {
+            try {
+                sendSlackMessage(":octagonal_sign: Server has stopped!");
+            } catch (SlackApiException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         });
 
         ServerMessageEvents.CHAT_MESSAGE.register((message, sender, params) -> {

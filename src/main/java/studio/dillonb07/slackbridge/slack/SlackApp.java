@@ -25,8 +25,17 @@ public class SlackApp {
             var event = req.getEvent();
             
             if (event.getSubtype() != null) {
-                sendMinecraftMessage(event.getText(), event.getUser());
                 return ctx.ack();
+            }
+            var userId = event.getUser();
+            var userInfoResponse = ctx.client().usersInfo(r -> r.user(userId));
+            var user = userInfoResponse.getUser();
+
+            if (user != null) {
+                var username = user.getRealName();
+                sendMinecraftMessage(event.getText(), username);
+            } else {
+                Slackbridge.LOGGER.error("User not found for ID: " + userId);
             }
             
             return ctx.ack();
@@ -41,7 +50,7 @@ public class SlackApp {
     private static void sendMinecraftMessage(String text, String user) {
         MinecraftServer server = Slackbridge.serverInstance;
         if (server != null) {
-            Text message = Text.literal("<" + user + "> " + text);
+            Text message = Text.literal("<Slack: " + user + "> " + text);
             server.getPlayerManager().broadcast(message, false);
         }
         
@@ -53,6 +62,13 @@ public class SlackApp {
                 .text(message)
                 .username(username)
                 .iconUrl(Slackbridge.CONFIG.avatarApi.replace("{player_uuid}", uuid))
+        );
+    }
+    
+    public static void sendSlackMessage(String message) throws SlackApiException, IOException {
+        app.client().chatPostMessage(r -> r
+                .channel(Slackbridge.CONFIG.relayChannelId)
+                .text(message)
         );
     }
     
