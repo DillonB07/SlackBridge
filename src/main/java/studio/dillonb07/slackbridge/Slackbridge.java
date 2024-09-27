@@ -65,9 +65,7 @@ public class Slackbridge implements ModInitializer {
             serverInstance = server;
             try {
                 sendSlackMessage(":white_check_mark: Server has started! !");
-            } catch (SlackApiException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
+            } catch (SlackApiException | IOException e) {
                 throw new RuntimeException(e);
             }
         });
@@ -75,22 +73,26 @@ public class Slackbridge implements ModInitializer {
         ServerLifecycleEvents.SERVER_STOPPED.register(server -> {
             try {
                 sendSlackMessage(":octagonal_sign: Server has stopped!");
-            } catch (SlackApiException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
+            } catch (SlackApiException | IOException e) {
                 throw new RuntimeException(e);
             }
         });
 
         ServerMessageEvents.CHAT_MESSAGE.register((message, sender, params) -> {
             String textContent = message.getSignedContent();
-            
             try {
                 sendChatMessage(textContent, sender.getName().copyContentOnly().getLiteralString(), 
                         sender.getUuidAsString());
-            } catch (SlackApiException e) {
+            } catch (SlackApiException | IOException e) {
                 throw new RuntimeException(e);
-            } catch (IOException e) {
+            }
+        });
+        
+        ServerMessageEvents.GAME_MESSAGE.register((server, text, bool) -> {
+            String textContent = text.getString();
+            try {
+                sendSlackMessage(textContent);
+            } catch (SlackApiException | IOException e) {
                 throw new RuntimeException(e);
             }
         });
