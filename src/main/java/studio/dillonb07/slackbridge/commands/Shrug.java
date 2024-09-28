@@ -12,7 +12,6 @@ import studio.dillonb07.slackbridge.slack.SlackApp;
 
 import java.io.IOException;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;

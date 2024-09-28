@@ -61,7 +61,7 @@ public class Slackbridge implements ModInitializer {
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
             serverInstance = server;
             try {
-                sendSlackMessage(":white_check_mark: Server has started! !");
+                sendSlackMessage(":white_check_mark: Server has started!");
             } catch (SlackApiException | IOException e) {
                 throw new RuntimeException(e);
             }
