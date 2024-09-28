@@ -2,7 +2,8 @@
 
 Slackbridge is a Fabric Minecraft <-> Slack chat relay for Minecraft 1.21.
 
-
+![Minecraft example](https://cloud-2f95io9t9-hack-club-bot.vercel.app/0image.png)
+![Slack example](https://cloud-2f95io9t9-hack-club-bot.vercel.app/1image.png)
 
 ## Download
 
@@ -85,7 +86,7 @@ Slackbridge is available to download on:
 ### Setup the Mod
 - Install the mod on your server by adding the jar to the mods folder.
 - Restart the server to generate the config file.
-- Open the config file and fill in the following fields:
+- Open the config file (`config/slackbridge.json`) and fill in the following fields:
   - `slackBotToken` - The Bot User OAuth Token
   - `slackAppToken` - The App Token
   - `relayChannelId` - The Channel ID
