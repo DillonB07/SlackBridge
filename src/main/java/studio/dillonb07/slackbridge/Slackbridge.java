@@ -8,11 +8,9 @@ import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.MinecraftServer;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.eclipse.jetty.server.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import studio.dillonb07.slackbridge.commands.Ping;
-import studio.dillonb07.slackbridge.commands.PingPong;
+import studio.dillonb07.slackbridge.commands.Shrug;
 import studio.dillonb07.slackbridge.config.ConfigManager;
 import studio.dillonb07.slackbridge.slack.SlackApp;
 
@@ -47,14 +45,13 @@ public class Slackbridge implements ModInitializer {
 
         LOGGER.info("Slackbridge v" + VERSION + " has been initialized!");
         
-        CommandRegistrationCallback.EVENT.register(((dispatcher, registryAccess, environment) -> Ping.register(dispatcher)));
-        CommandRegistrationCallback.EVENT.register(((dispatcher, registryAccess, environment) -> PingPong.register(dispatcher)));
+        CommandRegistrationCallback.EVENT.register(((dispatcher, registryAccess, environment) -> Shrug.register(dispatcher)));
 
         Thread slackBotThread = new Thread(() -> {
             try {
-                SlackApp.main();
+                SlackApp.init();
             } catch (Exception e) {
-                e.printStackTrace();
+                LOGGER.error(ExceptionUtils.getStackTrace(e));
             }
         });
         slackBotThread.setName("Slackbridge Bot Thread");
@@ -80,6 +77,7 @@ public class Slackbridge implements ModInitializer {
 
         ServerMessageEvents.CHAT_MESSAGE.register((message, sender, params) -> {
             String textContent = message.getSignedContent();
+            
             try {
                 sendChatMessage(textContent, sender.getName().copyContentOnly().getLiteralString(), 
                         sender.getUuidAsString());
@@ -90,7 +88,7 @@ public class Slackbridge implements ModInitializer {
         
         ServerMessageEvents.GAME_MESSAGE.register((server, text, bool) -> {
             String textContent = text.getString();
-            if (textContent.startsWith(("<Slack:"))) {
+            if (textContent.startsWith(("[Slack]"))) {
                 return;
             }
             
