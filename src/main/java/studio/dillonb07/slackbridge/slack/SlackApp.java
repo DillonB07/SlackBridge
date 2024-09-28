@@ -55,7 +55,7 @@ public class SlackApp {
         app.event(MessageFileShareEvent.class, (req, ctx) -> ctx.ack());
         app.event(MessageChangedEvent.class, (req, ctx) -> ctx.ack());
         
-        app.command("/slackbridge-info", (req, ctx) -> {
+        app.command(Slackbridge.CONFIG.infoCommand, (req, ctx) -> {
             StringBuilder message = new StringBuilder();
             List<ServerPlayerEntity> onlinePlayers =
                     Slackbridge.serverInstance.getPlayerManager().getPlayerList();

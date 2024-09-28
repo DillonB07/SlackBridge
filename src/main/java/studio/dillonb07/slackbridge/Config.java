@@ -14,6 +14,8 @@ public class Config {
     public String relayChannelId = "";
         
     public String[] adminUserIds = new String[0];
+    
+    public String infoCommand = "/slackbridge-info";
         
     public String avatarApi = "https://mc-heads.net/avatar/{player_uuid}.png";
     
