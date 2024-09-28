@@ -5,10 +5,7 @@ import com.slack.api.bolt.AppConfig;
 
 import com.slack.api.bolt.socket_mode.SocketModeApp;
 import com.slack.api.methods.SlackApiException;
-import com.slack.api.model.event.MessageChangedEvent;
-import com.slack.api.model.event.MessageChannelJoinEvent;
-import com.slack.api.model.event.MessageEvent;
-import com.slack.api.model.event.MessageFileShareEvent;
+import com.slack.api.model.event.*;
 import com.slack.api.socket_mode.SocketModeClient;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.ServerTickManager;
@@ -54,6 +51,7 @@ public class SlackApp {
         app.event(MessageChannelJoinEvent.class, (req, ctx) -> ctx.ack());
         app.event(MessageFileShareEvent.class, (req, ctx) -> ctx.ack());
         app.event(MessageChangedEvent.class, (req, ctx) -> ctx.ack());
+        app.event(MessageDeletedEvent.class, (req, ctx) -> ctx.ack());
         
         app.command(Slackbridge.CONFIG.infoCommand, (req, ctx) -> {
             StringBuilder message = new StringBuilder();
