@@ -1,5 +1,8 @@
 # Slackbridge
 
+ > [!WARNING]
+> Slackbridge does not work in production servers, only development. This is because I've not been able to package it properly with its dependencies in a `.jar` file. Slackbridge is also not maintained
+
 Slackbridge is a Fabric Minecraft <-> Slack chat relay for Minecraft 1.21.
 
 ![Minecraft example](https://cloud-2f95io9t9-hack-club-bot.vercel.app/0image.png)
